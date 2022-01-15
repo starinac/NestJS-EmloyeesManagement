@@ -16,8 +16,13 @@ export class EmployeesService {
     return employee;
   }
 
-  async findAllEmployees(): Promise<Employee[]> {
-    const employees = await this.employeeModel.find().exec();
+  async findAllEmployees(documentsToSkip = 0, limitOfDocuments?: number): Promise<Employee[]> {
+    const employees = this.employeeModel.find().skip(documentsToSkip);
+
+    if(limitOfDocuments){
+      employees.limit(limitOfDocuments);
+    }
+
     return employees;
   }
 
