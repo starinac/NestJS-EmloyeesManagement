@@ -16,8 +16,6 @@ export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
     @IsOptional()
     readonly adressLine1: string;
     @IsOptional()
-    readonly adressLine2: string;
-    @IsOptional()
     readonly dateOfEmployment: Date;
     @IsOptional()
     readonly dateOfBirth: Date;
