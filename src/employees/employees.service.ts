@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { GoneException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -27,21 +27,32 @@ export class EmployeesService {
   }
 
   async findOneEmployee(id: string): Promise<Employee> {
-    const employee = await this.employeeModel.findById(id);
-
-    if(!employee)
-          throw new NotFoundException(`Employee with ID number: ${id} not found`);
+    const employee = await this.findEmployee(id);
 
     return employee;
   }
 
+  async findDeletedEmployees(){
+    const employees = await this.employeeModel.find({isDeleted: true}).exec();
+    return employees;
+  }
+
   async updateEmployee(id: string, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
-    const existingEmployee = await this.employeeModel.findByIdAndUpdate(id, updateEmployeeDto, {new: true});
+    const existingEmployee = await this.employeeModel.findByIdAndUpdate(id, updateEmployeeDto, {new: true}).exec();
 
     if(!existingEmployee)
           throw new NotFoundException(`Employee with ID number: ${id} not found`);
 
     return existingEmployee;
+  }
+
+  async softDeleteEmployee(id: string) {
+    let employee = await this.findEmployee(id);
+    if(employee.isDeleted === true){
+      throw new GoneException(`Employee with id number: ${id} is already soft deleted`);
+    }
+    employee.isDeleted = true;
+    return this.updateEmployee(id, employee);
   }
 
   async removeEmployee(id: string) {
@@ -50,6 +61,19 @@ export class EmployeesService {
     if(!employee)
           throw new NotFoundException(`Employee with ID number: ${id} not found`);
 
+    return employee;
+  }
+
+  private async findEmployee(id: string): Promise<Employee> {
+    let employee;
+    try {
+      employee = await this.employeeModel.findById(id).exec();
+    } catch (error) {
+      throw new NotFoundException(`Employee with ID number: ${id} not found`);
+    }
+    if (!employee) {
+      throw new NotFoundException(`Employee with ID number: ${id} not found`);
+    }
     return employee;
   }
 }

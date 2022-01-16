@@ -20,4 +20,6 @@ export class CreateEmployeeDto {
     readonly dateOfEmployment: Date;
     @IsDateString()
     readonly dateOfBirth: Date;
+    @IsOptional()
+    readonly isDeleted: boolean = false;
 }

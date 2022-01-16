@@ -10,4 +10,5 @@ export const EmployeeSchema = new Schema({
     adressLine2: {type: String, required: false},
     dateOfEmployment: {type: Date, required: true},
     dateOfBirth: {type: Date, required: true},
+    isDeleted: {type: Boolean, required: false, default: false}
 });

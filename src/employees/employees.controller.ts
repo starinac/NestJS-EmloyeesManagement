@@ -18,10 +18,15 @@ export class EmployeesController {
     return this.employeesService.findAllEmployees(skip, limit);
   }
 
-  @Get(':id')
+  @Get('getone/:id')
   findOne(@Param('id') id: string) {
     return this.employeesService.findOneEmployee(id);
   }
+
+  @Get('deleted')
+   getAllDeletedemployees(){
+       return this.employeesService.findDeletedEmployees();
+   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto) {
@@ -29,7 +34,12 @@ export class EmployeesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  softDelete(@Param('id') id: string) {
+    return this.employeesService.softDeleteEmployee(id);
+  }
+
+  @Delete('delete/:id')
+  delete(@Param('id') id: string) {
     return this.employeesService.removeEmployee(id);
   }
 }

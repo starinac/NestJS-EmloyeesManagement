@@ -11,4 +11,5 @@ export class Employee extends Document {
     adressLine2: string;
     dateOfEmployment: Date;
     dateOfBirth: Date;
+    isDeleted: boolean;
 }
