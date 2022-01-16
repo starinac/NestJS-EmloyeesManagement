@@ -67,7 +67,7 @@ export class EmployeesService {
   private async findEmployee(id: string): Promise<Employee> {
     let employee;
     try {
-      employee = await this.employeeModel.findById(id).exec();
+      employee = await this.employeeModel.findById(id);
     } catch (error) {
       throw new NotFoundException(`Employee with ID number: ${id} not found`);
     }

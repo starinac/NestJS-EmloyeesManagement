@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { PaginationParams } from 'src/pagination/pagination.params';
+import { PaginationParams } from '../pagination/pagination.params';
 
 @Controller('employees')
 export class EmployeesController {
